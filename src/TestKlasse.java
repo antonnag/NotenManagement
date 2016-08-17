@@ -32,7 +32,7 @@ public class TestKlasse {
 
 	 }
 	
-     public static void AusgabeAllerNoten(List<Noten> tempList) {
+     public static void AusgabeAllerNoten(List<Note> tempList) {
       int i = 0;
       while (i < tempList.size()) {
     	  System.out.println(" " + tempList.get(i).getNote()) ;
@@ -83,7 +83,7 @@ public class TestKlasse {
      
      public static void NotenProFachSetzenDe(Fach tempFach) {
     
-    	 tempFach.setNote(6, "s", "20161010") ;
+    	 tempFach.setNote(6, "s", "20171010") ;
     	 tempFach.setNote(5.8, "s", "20161010");   	 
     	 tempFach.setNote(5.5, "s", "20161010");
     	 

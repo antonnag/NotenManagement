@@ -3,57 +3,68 @@ import java.util.List;
 
 
 public class NotenBerechnungen {
-    
-	//Berechnet den Mittelwert von allen Noten von einer Notenliste
-	public double NotenMittelwertBerechnen(List<Noten> notenSimpleListe){
+ 
+	double mittelwertS = 0; double mittelwertM = 0; double mittelwertV = 0;
+	double mittelwertTotal = 0;	
+	NumberFormat nummerFormat;
 	
-		double SumNoten = 0;
-	      double tempMittelwert = 0;
+	//Berechnet den Mittelwert von allen Note von einer Notenliste
+	public double NotenMittelwertBerechnen(List<Note> notenSimpleListe){
+	
+		  double SummenNoten = 0;
+	      double temporäreMittelwert = 0;
 	      
 	      int i = 0;
 	      while (i < notenSimpleListe.size()) {
-	    	  SumNoten = SumNoten + notenSimpleListe.get(i).getNoteAnteil();
+	    	  SummenNoten = SummenNoten + notenSimpleListe.get(i).getNoteAnteil();
 				i++;
 			}
-	      tempMittelwert = SumNoten / notenSimpleListe.size();
-		  return tempMittelwert;
+	      temporäreMittelwert = SummenNoten / notenSimpleListe.size();
+		  return temporäreMittelwert;
 
 	}
 	
-	public double NotenSchnittInklAllerTypenNoten(List<Noten> n1, List<Noten> n2, List<Noten> n3 ){
+	public double notenSchnittInklAllerTypenNoten(List<Note> listeSchrieftlich, List<Note> listeMuendlich, List<Note> listeVoci ){
     //  Berechnet den gesamten Notenschnitt eines Faches, dabei müssen alle NotenListen Typen (Schriftlich, Mündlich, Voci) als Parameter mitgegeben werden 
-		double avgS = 0; double avgM = 0; double avgV = 0;
-		double avgTotal = 0;	
-	    //Instanz um double Werte zu runden
-		NumberFormat n = NumberFormat.getInstance();
-	    n.setMaximumFractionDigits(3);
 
+	    //Instanz um double Werte zu runden
+
+		nummerFormat = NumberFormat.getInstance();
+		nummerFormat.setMaximumFractionDigits(3);
+
+		berechneneMittelWertS(listeSchrieftlich,listeVoci);
+		berechneneMittelWertM(listeMuendlich);
 		
-        if(n1.size() > 0){            	
-       	//Verarbeiten der Noten aus der der NotenListe <Schriftlich>
-        	//Berücksichtigen der Voci Noten. Mittelwert aller Voci Noten zählt wie eine ganze schriftlich Note
-        	if(n3.size() > 0){
+	    //Runden des muenldichen Mittelwertes auf 2 Kommastellen
+	    nummerFormat.setMaximumFractionDigits(2);
+		mittelwertTotal = Double.parseDouble(nummerFormat.format(mittelwertS + mittelwertM));
+		return mittelwertTotal;	
+	}
+	
+	private void  berechneneMittelWertS(List<Note> listeSchrieftlich, List<Note> listeVoci ){
+	  if(listeSchrieftlich.size() > 0){            	
+       	//Verarbeiten der Note aus der der NotenListe <Schriftlich>
+        	//Berücksichtigen der Voci Note. Mittelwert aller Voci Note zählt wie eine ganze schriftlich Note
+        	if(listeVoci.size() > 0){
    			 ;  		
    	         //Runden des Voci Mittelwertes auf 3 Kommastellen
-   		     avgV = Double.parseDouble(n.format(NotenMittelwertBerechnen(n3)));
+   		     this.mittelwertV = Double.parseDouble(nummerFormat.format(NotenMittelwertBerechnen(listeVoci)));
    		     //Voci Mittelwerte wird in die schriftlich Notenliste hinzugefügt
-   	    	 n1.add(new VociNote(avgV,n1.get(1).getAnteil(),"V","99999999"));
+   		     listeSchrieftlich.add(new VociNote(this.mittelwertV,listeSchrieftlich.get(1).getAnteil(),"V","99999999"));
    		    }
             //Runden des schriftlichen Mittelwertes auf 3 Kommastellen
-        	avgS = Double.parseDouble(n.format(NotenMittelwertBerechnen(n1)));	
-        
+        	this.mittelwertS = Double.parseDouble(nummerFormat.format(NotenMittelwertBerechnen(listeSchrieftlich)));	
         }
-        ///Verarbeiten der Noten aus der der NotenListe <Muendlich>
-	    if(n2.size() > 0){ 	
-	    	 //Runden des muenldichen Mittelwertes auf 3 Kommastellen
- 			  avgM = Double.parseDouble(n.format(NotenMittelwertBerechnen(n2)));	
- 		     }
-     
-        //Runden des muenldichen Mittelwertes auf 2 Kommastellen
-	    n.setMaximumFractionDigits(2);
-		avgTotal = Double.parseDouble(n.format(avgS + avgM));
-		
-		return avgTotal;	
 	}
+	
+	private void berechneneMittelWertM(List<Note> listeMuendlich ){	
+    ///Verarbeiten der Note aus der der NotenListe <Muendlich>
+    if(listeMuendlich.size() > 0){ 	
+    	 //Runden des muenldichen Mittelwertes auf 3 Kommastellen
+			  this.mittelwertM = Double.parseDouble(this.nummerFormat.format(NotenMittelwertBerechnen(listeMuendlich)));	
+
+    		}   
+	}
+    	
 	
 }

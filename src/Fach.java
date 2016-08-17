@@ -11,20 +11,19 @@ public class Fach{
 	int anzahlAndereNoten;
 	int anzahlVociNoten;
 	
-	//Standard anteil werte
+
 	double anteilSchriftlich = 0.8;
 	double anteilMuendlich = 1 - anteilSchriftlich ;
 	double anteilVoci = 1;
 	
 	String fachName;
    
-    private List<Noten> notenListe = new ArrayList<Noten>();
+    private List<Note> notenListe = new ArrayList<Note>();
 
 	
 	
 	public Fach (String fachName){
-		//Konstruktor 1
-		//Generiert ein Objekt mit standard Anteilwerten
+
 		this.fachName = fachName;
 	}
 	
@@ -37,6 +36,10 @@ public class Fach{
 		this.anteilMuendlich = anteilMuendlich;
 	}
 
+	/*Getter fuer Konstruktorvariabeln*/
+	public String getFachName() {
+		return this.fachName;
+	}
 	
 	public void setNote(double note, String notenTyp, String datum) {
 	//Erstellt spezfische Notenobjekte, je nach Typ		
@@ -56,62 +59,45 @@ public class Fach{
         }
 	}
    
-	/*Getter fuer Konstruktorvariabeln*/
-	public String getFachName() {
-		return this.fachName;
-	}
+
 	
-	public double getNote(Noten noteObjekt){
-		return  noteObjekt.getNote();
-	}
+
 	
-	public double getAnteil(Noten noteObjekt){
-		return noteObjekt.getAnteil();
-	}
-	
-	public double getNoteAnteil(Noten noteObjekt){
-		return noteObjekt.getNoteAnteil();
-	}
-	
-	public String getNoteDatum(Noten noteObjekt){
-		return noteObjekt.getDatum();
-	}
-	
-	
-	public List<Noten> getNoteObjekte(){
+	public List<Note> getNoteObjekte(){
 		return getSortierteListe(notenListe);
 	}
 	/*-------------------------------------*/
 	
 	//Objektspezifische Listen ausgabe sortiert 
-	public List<Noten> getSchriftlicheNoteObjekte(){
-	    List<Noten> schriftlichNotenListe = new ArrayList<Noten>();
+	public List<Note> getSchriftlicheNoteObjekte(){
+	    List<Note> schriftlichNotenListe = new ArrayList<Note>();
 	
-	    for (Noten element  : this.notenListe) {
+	    for (Note element  : this.notenListe) {
 			if(element instanceof SchriftlichNote){
 				schriftlichNotenListe.add(element);	
 			}
 		}
-		return schriftlichNotenListe;
+	    
+	    return getSortierteListe(schriftlichNotenListe);
 	}
 	
-	public List<Noten> getMuendlicheNoteObjekte(){
-	    List<Noten> muendlichNotenListe = new ArrayList<Noten>();
+	public List<Note> getMuendlicheNoteObjekte(){
+	    List<Note> muendlichNotenListe = new ArrayList<Note>();
 	
-	    for (Noten element  : this.notenListe) {
+	    for (Note element  : this.notenListe) {
 			if(element instanceof MuendlichNote){
 				muendlichNotenListe.add(element);	
 			}
 		}
-		return muendlichNotenListe;
+	    return getSortierteListe(muendlichNotenListe);
 	}	
 	
 
 	
-	public List<Noten> getVociNoteObjekte(){
-	    List<Noten> vociNotenListe = new ArrayList<Noten>();
+	public List<Note> getVociNoteObjekte(){
+	    List<Note> vociNotenListe = new ArrayList<Note>();
 	
-	    for (Noten element  : this.notenListe) {
+	    for (Note element  : this.notenListe) {
 			if(element instanceof VociNote){
 				vociNotenListe.add(element);	
 			}
@@ -120,9 +106,9 @@ public class Fach{
 	}	
 	/*------------------------------------*/
 	
-	public List<Noten> getSortierteListe(List<Noten> sortierteListe){
+	public List<Note> getSortierteListe(List<Note> sortierteListe){
 		 
-	     Collections.sort(sortierteListe, Noten.NotenDatumComparator);
+	     Collections.sort(sortierteListe, Note.NotenDatumComparator);
 		return sortierteListe;
 	}
 
@@ -130,12 +116,13 @@ public class Fach{
 		//Berechnet den gesamten Schnitt eins Faches
 		double schnitt = 0;
         NotenBerechnungen notenFachObjekt = new NotenBerechnungen();
-        schnitt = notenFachObjekt.NotenSchnittInklAllerTypenNoten(getSchriftlicheNoteObjekte(), getMuendlicheNoteObjekte(), getVociNoteObjekte());
+        schnitt = notenFachObjekt.notenSchnittInklAllerTypenNoten(getSchriftlicheNoteObjekte(), getMuendlicheNoteObjekte(), getVociNoteObjekte());
         return schnitt;
 				
 	}
 	
 
-
+	
+	
 
 }
